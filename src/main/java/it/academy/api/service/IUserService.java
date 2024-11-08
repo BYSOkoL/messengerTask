@@ -3,7 +3,6 @@ package it.academy.api.service;
 import it.academy.dto.LoginDto;
 import it.academy.dto.UserDto;
 import it.academy.entity.User;
-
 import java.sql.SQLException;
 import java.util.Optional;
 

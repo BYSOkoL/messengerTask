@@ -2,7 +2,6 @@ package it.academy.api.service;
 
 import it.academy.dto.MessageDto;
 import it.academy.entity.Message;
-
 import java.sql.SQLException;
 import java.util.List;
 
