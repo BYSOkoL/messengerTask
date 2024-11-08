@@ -4,6 +4,7 @@ import it.academy.api.service.IUserService;
 import it.academy.dto.UserDto;
 import it.academy.service.UserService;
 import it.academy.storage.UserStorage;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,6 +39,9 @@ public class RegistrationServlet extends HttpServlet {
         try {
             userService.registerUser(userDto);
             response.sendRedirect("login.jsp");
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("signUp.jsp").forward(request, response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to register user");
         }

@@ -2,9 +2,9 @@ package it.academy.controller.servlet;
 
 import it.academy.api.service.IMessageService;
 import it.academy.dto.MessageDto;
-import it.academy.entity.Message;
 import it.academy.service.MessageService;
 import it.academy.storage.MessageStorage;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -37,6 +37,8 @@ public class MessageServlet extends HttpServlet {
         try {
             messageService.sendMessage(messageDto);
             response.setStatus(HttpServletResponse.SC_OK);
+        } catch (IllegalArgumentException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to send message");
         }
@@ -47,7 +49,7 @@ public class MessageServlet extends HttpServlet {
         String user = request.getParameter("user");
 
         try {
-            List<Message> messages = messageService.getMessagesByUser(user);
+            List<MessageDto> messages = messageService.getMessagesByUser(user); // Используется правильный тип
             request.setAttribute("messages", messages);
             request.getRequestDispatcher("/WEB-INF/views/messages.jsp").forward(request, response);
         } catch (SQLException e) {

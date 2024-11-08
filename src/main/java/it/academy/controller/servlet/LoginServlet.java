@@ -5,6 +5,7 @@ import it.academy.dto.LoginDto;
 import it.academy.entity.User;
 import it.academy.service.UserService;
 import it.academy.storage.UserStorage;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -40,6 +41,9 @@ public class LoginServlet extends HttpServlet {
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid login credentials");
             }
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to login user");
         }
