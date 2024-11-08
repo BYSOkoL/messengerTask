@@ -1,31 +1,30 @@
 package it.academy.service;
 
 import it.academy.api.service.IMessageService;
-import it.academy.api.storage.IMessageStorage;
 import it.academy.dto.MessageDto;
 import it.academy.entity.Message;
 import it.academy.storage.MessageStorage;
+import it.academy.validation.MessageValidator;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class MessageService implements IMessageService {
+    private final MessageStorage messageStorage;
 
-    private final IMessageStorage messageStorage;
-
-    public MessageService(IMessageStorage messageStorage) {
+    public MessageService(MessageStorage messageStorage) {
         this.messageStorage = messageStorage;
     }
 
     @Override
     public void sendMessage(MessageDto messageDto) throws SQLException {
-        Message message = Message.builder()
-                .timestamp(LocalDateTime.now())
-                .fromUser(messageDto.getFromUser())
-                .toUser(messageDto.getToUser())
-                .text(messageDto.getText())
-                .build();
+        MessageValidator.validate(messageDto);
+
+        Message message = new Message();
+        message.setFromUser(messageDto.getFromUser());
+        message.setToUser(messageDto.getToUser());
+        message.setText(messageDto.getText());
+        message.setTimestamp(messageDto.getTimestamp());
         messageStorage.save(message);
     }
 

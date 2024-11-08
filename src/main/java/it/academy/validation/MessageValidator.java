@@ -3,16 +3,15 @@ package it.academy.validation;
 import it.academy.dto.MessageDto;
 
 public class MessageValidator {
-
-    public static boolean isValid(MessageDto messageDto) {
-        return isValidText(messageDto.getText()) && isValidUser(messageDto.getFromUser()) && isValidUser(messageDto.getToUser());
-    }
-
-    private static boolean isValidText(String text) {
-        return text != null && !text.trim().isEmpty();
-    }
-
-    private static boolean isValidUser(String user) {
-        return user != null && !user.trim().isEmpty();
+    public static void validate(MessageDto messageDto) {
+        if (messageDto.getFromUser() == null || messageDto.getFromUser().isEmpty()) {
+            throw new IllegalArgumentException("Sender cannot be empty");
+        }
+        if (messageDto.getToUser() == null || messageDto.getToUser().isEmpty()) {
+            throw new IllegalArgumentException("Recipient cannot be empty");
+        }
+        if (messageDto.getText() == null || messageDto.getText().isEmpty()) {
+            throw new IllegalArgumentException("Message text cannot be empty");
+        }
     }
 }
